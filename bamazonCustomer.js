@@ -73,7 +73,7 @@ var userQuantity = userQuantity;
   {
 
     var newStock = res[0].stock_quantity - userQuantity
-    Order(userProduct,newStock)
+    Order(userProduct,userQuantity,newStock)
     console.log("order complete")
   }
 
@@ -92,11 +92,28 @@ var userQuantity = userQuantity;
 
 
 
-// function to complete order and reduce stock in database
-function Order(userProduct,newStock){
+
+
+
+
+// function to complete order output purchase cost and reduce stock in database
+function Order(userProduct,userQuantity,newStock){
 
 var newStock = newStock;
 var userProduct = userProduct;
+var userQuantity = userQuantity;
+
+  connection.query("SELECT price FROM products WHERE item_id=" + userProduct, function(err,res){
+    if(err) throw err;
+
+  var costofPurchase =  res[0].price * userQuantity
+  console.log("Cost of your purchase: " + "$" + costofPurchase);
+
+  });
+
+
+
+
 
     connection.query("UPDATE products " + "SET stock_quantity=" + newStock +  " WHERE item_id=" + userProduct, function(err,res)
     {
