@@ -236,6 +236,12 @@ function viewLowInventory(){
   {
   if(err) throw err;
 
+ if(res.length === 0)
+
+ {
+
+  console.log("Everything is in stock 'greater than 5 units'")
+ }
 
 for (var i = 0; i < res.length; i++) {
 
@@ -244,10 +250,6 @@ for (var i = 0; i < res.length; i++) {
 
 }
 
-  // res[0].item_id
-  // res[0].stock_quantity;
-  // res[0].price;
-  // res[0].product_name;
 });
 
 
