@@ -3,6 +3,10 @@ var mysql = require("mysql")
 var inquirer = require("inquirer")
 
 
+
+
+
+
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -29,7 +33,6 @@ inquirer.prompt([
 
 
 userChoice = answer.Menu;
-console.log(userChoice)
 
 if(userChoice === "View Products for Sale")
 {
@@ -99,13 +102,15 @@ var userQuantity = answer.qty;
 
 
 
-var newStock = res[0].stock_quantity + userQuantity;
+var newStock = parseInt(res[0].stock_quantity) + parseInt(userQuantity);
 
 
 connection.query("UPDATE products " + "SET stock_quantity=" + newStock +  " WHERE item_id=" + userProduct, function(err,res)
     {
     if(err) throw err;
 
+  console.log("Stock Updated")
+  connection.end();
 
     });
 
@@ -135,7 +140,7 @@ inquirer.prompt([
   {
 
     type:"input",
-    name:"Price",
+    name:"price",
     message : "Price of Item?"
   },
 
@@ -155,16 +160,10 @@ inquirer.prompt([
 
 ]).then(function(answer) {
 
-
-var userProduct = answer.name;
-var userQuantity = answer.qty;
-
-
-
-
-
-
-
+var name = answer.name;
+var price = answer.price;
+var stock = answer.stock_quantity;
+var dept  = answer.dept;
 
 
 
@@ -174,23 +173,41 @@ var userQuantity = answer.qty;
   });
 
 
-  connection.query("SELECT * FROM products WHERE stock_quantity < 5", function(err,res)
+  connection.query("INSERT INTO products SET ?",
+
+
+  {
+
+    product_name:name,
+    department_name:dept,
+    price: price,
+    stock_quantity:stock,
+
+
+  },
+
+  function(err,res)
   {
   if(err) throw err;
 
 
+  console.log("Your item was added successfully")
+
+connection.end();
 
 
+
+});
+
+
+
+
+
+
+});
 
 
 }
-
-
-
-
-
-
-
 
 
 
