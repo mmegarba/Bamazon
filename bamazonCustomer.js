@@ -103,11 +103,21 @@ var newStock = newStock;
 var userProduct = userProduct;
 var userQuantity = userQuantity;
 
-  connection.query("SELECT price FROM products WHERE item_id=" + userProduct, function(err,res){
+
+
+  connection.query("SELECT price, product_sales FROM products WHERE item_id=" + userProduct, function(err,res){
     if(err) throw err;
 
   var costofPurchase =  res[0].price * userQuantity
   console.log("Cost of your purchase: " + "$" + costofPurchase);
+
+
+
+  var newProductSales = res[0].product_sales + costofPurchase;
+
+
+
+
 
   });
 
